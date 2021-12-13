@@ -118,10 +118,14 @@ class Search(__Query):
         """ returns results of search query """
         url = f"https://api.{ self._token._get_sandbox() }ebay.com/buy/browse/v1/item_summary/search?"
         payload = "&".join(f"{k}={v}" for k, v in self.__args)
-        header = {
+        headers = {
             'content-type': "application/x-www-form-urlencoded",
             'Authorization': self._token.get_token()
         }
+        
+        response = requests.request("GET", url, data=payload, headers=headers)
+        
+        return json.loads(response.text)
     
     
 
