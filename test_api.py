@@ -15,7 +15,7 @@ class Test_API(unittest.TestCase):
     def test_token_buffer(self):
         t = Token(AUTH_ID, CLIENT_ID, [Scope.PUBLIC])
         
-        token_a = t.get_token()["access_token"]
-        token_b = t.get_token()["access_token"]
+        token_a = t.get_token()
+        token_b = t.get_token()
         
         self.assertEquals(token_a, token_b)
