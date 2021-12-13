@@ -1,8 +1,13 @@
 import unittest
 from api import Scope, Search, Token
+import json
 
-AUTH_ID = "DylanLut-pyBuy-SBX-47ca6edf0-a73f32d9"
-CLIENT_ID = "SBX-7ca6edf0bf2a-6443-4f6d-89e1-32be"
+KEYS_SOURCE = "keys.json"
+with open(KEYS_SOURCE, "r") as f:
+        keys = json.load(f)
+
+AUTH_ID = keys["App ID"] 
+CLIENT_ID = keys["Cert ID"]
 
 class Test_Scope(unittest.TestCase):
     def test_public(self):
