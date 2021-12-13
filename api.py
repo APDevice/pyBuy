@@ -87,6 +87,18 @@ class Token:
         else:
             return "No valid token."
 
+class Result:
+    """ stores results of API request """
+    def __init__(self, json_data) -> None:
+        self.__raw_data = json_data
+        self.__data = json.loads(json_data)
+        
+    def get_data(self) -> dict:
+        return self.__data
+    
+    def get_raw_data(self) -> str:
+        return self.__raw_data
+
 class __Query: 
     """ abstract class for all query types """
     def __init__(self, token: Token) -> None:
@@ -98,15 +110,24 @@ class Search(__Query):
         super().__init__(token)
         self.__args = {}
 
+
     def __str__(self):
         return self.__args
+    
+    def get_data(self):
+        return self.__data
+    
+    def get_raw_data(self):
+        """ returns raw JSON data from query """
+        
     
     def new_search(self) -> "Search":
         """ reset search object to begin new seach """
         self.__args.clear()
+        self.__raw_data = None
         return self
     
-    def keywords(self, *kwds, mode_or = False):
+    def keywords(self, *kwds, mode_or = False) -> "Search":
         """ adds keywords to search query """
         if mode_or:
             self.__args["q"] = f"({', '.join(kwds)})"
@@ -114,7 +135,7 @@ class Search(__Query):
             self.__args["q"] = ' '.join(kwds)
         return self
         
-    def execute(self):
+    def execute(self) -> Result:
         """ returns results of search query """
         url = f"https://api.{ self._token._get_sandbox() }ebay.com/buy/browse/v1/item_summary/search?" + \
                 "&".join(f"{k}={v}" for k, v in self.__args.items())
@@ -124,8 +145,7 @@ class Search(__Query):
         
         response = requests.request("GET", url, headers=headers)
         
-        log.debug(response.text)
-        return json.loads(response.text)
+        return Result(response.text)
     
     
 
