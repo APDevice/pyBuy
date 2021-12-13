@@ -95,11 +95,11 @@ class Result:
         self.__token = token
         
     def get_data(self) -> dict:
-        """  """
+        """ returns result data as python dictionary """
         return self.__data
     
     def get_raw_data(self) -> str:
-        """  """
+        """ returns raw response data """
         return self.__raw_data
     
     def __str__(self):
@@ -148,16 +148,8 @@ class Search(__Query):
         super().__init__(token)
         self.__args = {}
 
-
     def __str__(self):
         return self.__args
-    
-    def get_data(self):
-        return self.__data
-    
-    def get_raw_data(self):
-        """ returns raw JSON data from query """
-        
     
     def new_search(self) -> "Search":
         """ reset search object to begin new seach """
