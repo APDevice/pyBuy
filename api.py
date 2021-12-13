@@ -19,26 +19,35 @@ class Token:
             gets token. If token already exists and has not expired, will return that.
             Otherwise requests new token from server
     """    
+    __sandbox = "sandbox."
+    
     def __init__(self, auth_id: str,
                  client_id: str,
-                 scope: list,
-                 sandbox: bool = True) -> None:
+                 scope: list) -> None:
         """ initilize Token instance """
         self.__key = auth_id
         self.__secret = client_id
         assert ( type(scope) is list ) or ( type(scope) is tuple ), "scope argument must be list or tuple"
         
         self.__scope = ' '.join(scope)
-        self.__sandbox = "sandbox." if sandbox else ""
         
         log.debug(f"credentials: {self.__key}:{self.__secret}")
         log.debug(f"scope: {self.__scope}")
-        log.debug(f"Sandbox mode: { 'True' if self.__sandbox else 'False' }")
         
         # token buffer
         self.__token = None
         self.__last_retrieved = 0
-        
+    
+    @classmethod
+    def EnableSandbox(cls) -> None:
+        """ Enables sandbox mode """
+        cls.__sandbox = "sandbox."
+
+    @classmethod
+    def DisableSandbox(cls) -> None:
+        """ Disables sandbox mode """
+        cls.__sandbox  = ""
+
     def __auth(self) -> str:
         return 'Basic ' + b64encode((self.__key + ':' + self.__secret).encode()).decode()
 
@@ -46,7 +55,7 @@ class Token:
         """ returns application access token """
         # if token doesn't already exist or it has expired, get new token
         if not self.__token or (self.__token['expires_in'] + self.__last_retrieved) < int(time()):
-            url = f"https://api.{ self.__sandbox }ebay.com/identity/v1/oauth2/token"
+            url = f"https://api.{ Token.__sandbox }ebay.com/identity/v1/oauth2/token"
             payload = f"grant_type=client_credentials&scope={ self.__scope }"
             headers = {
                 'Content-Type': "application/x-www-form-urlencoded",
@@ -66,8 +75,15 @@ class Token:
         else:
             return "No valid token."
 
-def search():
-    pass
+# class Search(token)
+#     def search(token: Token):
+#         url = ""
+#         payload = ""
+#         header = {
+            
+#         }
+        
+        
 
 
 
