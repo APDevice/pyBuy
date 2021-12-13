@@ -46,6 +46,7 @@ class Token:
         
         self.__scope = ' '.join(scope)
         
+        # debug output
         log.debug(f"credentials: {self.__key}:{self.__secret}")
         log.debug(f"scope: {self.__scope}")
         
@@ -95,6 +96,7 @@ class Token:
         return self.__token['access_token']
     
     def __str__(self) -> str:
+        """ return token string if it exists """
         if self.__token:
             return self.__token['access_token']
         else:
@@ -225,13 +227,16 @@ class Search(__Query):
             # write header
             writer.writerow(("id", "title", "price", "adult_only", "location", "url"))
             
+            # loop through items in query
             for item in items:
                 row = []
                 for col in columns:
-                    if col == "itemLocation":
+                    if col == "itemLocation": 
+                        # combine values of item location
                         location = ", ".join(loc for loc in item["itemLocation"])
                         row.append( location )
                     elif col == "price":
+                        # join price with currency
                         price = item['price']['value'] + item['price']['currency']
                         row.append( price )
                     else:
