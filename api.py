@@ -107,6 +107,10 @@ class Result:
         self.__data = json.loads(json_data)
         self.__token = token
         
+    def get_token(self) -> Token:
+        """ for debuging purposes """
+        return self.__token
+        
     def get_data(self) -> dict:
         """ returns result data as python dictionary """
         return self.__data
@@ -120,7 +124,7 @@ class Result:
     
     def has_next(self):
         """ returns true if there is a next page, else false """
-        return "next" in self.__data
+        return self.__data["total"] > (self.__data["limit"] + self.__data["offset"])
     
     def next(self) -> "Result":
         """ returns next page of results """
@@ -129,7 +133,7 @@ class Result:
         
         url = self.__data["next"]
         headers = {
-            'Authorization': f"Bearer {self._token.get_token()}"
+            'Authorization': f"Bearer {self.__token.get_token()}"
         }
         response = requests.request("GET", url, headers=headers)
         
@@ -137,7 +141,7 @@ class Result:
 
     def has_previous(self) -> bool:
         """ returns true if there is a previous page, else false """
-        return "prev" in self.__data
+        return self.__data["offset"] > 0
     
     def previous(self) -> "Result":
         """ returns next page of results """
@@ -146,7 +150,7 @@ class Result:
         
         url = self.__data["prev"]
         headers = {
-            'Authorization': f"Bearer {self._token.get_token()}"
+            'Authorization': f"Bearer {self.__token.get_token()}"
         }
         response = requests.request("GET", url, headers=headers)
         
@@ -217,17 +221,3 @@ class Search(__Query):
                     else:
                         row.append( item[col] )
                 writer.writerow( row )
-        
-
-# url = "https://api.sandbox.ebay.com/identity/v1/oauth2/token"
-
-# payload = "apiKey=%3CREQUIRED%3E&SKU=%3CREQUIRED%3E"
-# headers = {
-#     'content-type': "application/x-www-form-urlencoded",
-#     'Authorization': "Basic "
-#     }
-
-# response = requests.request("POST", url, data=payload, headers=headers)
-# print("test")
-# print(response.text)
-
