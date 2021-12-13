@@ -89,16 +89,54 @@ class Token:
 
 class Result:
     """ stores results of API request """
-    def __init__(self, json_data) -> None:
+    def __init__(self, json_data: str, token: Token) -> None:
         self.__raw_data = json_data
         self.__data = json.loads(json_data)
+        self.__token = token
         
     def get_data(self) -> dict:
+        """  """
         return self.__data
     
     def get_raw_data(self) -> str:
+        """  """
         return self.__raw_data
+    
+    def __str__(self):
+        return self.get_data()
+    
+    def has_next(self):
+        return "next" in self.__data
+    
+    def next(self):
+        """ returns next page of results """
+        if not self.has_next():
+            raise KeyError("next page not available")
+        
+        url = self.__data["next"]
+        headers = {
+            'Authorization': f"Bearer {self._token.get_token()}"
+        }
+        response = requests.request("GET", url, headers=headers)
+        
+        return Result(response.text, self.__token)
 
+    def has_previous(self):
+        return "prev" in self.__data
+    
+    def previous(self):
+        """ returns next page of results """
+        if not self.has_next():
+            raise KeyError("previous page not available")
+        
+        url = self.__data["prev"]
+        headers = {
+            'Authorization': f"Bearer {self._token.get_token()}"
+        }
+        response = requests.request("GET", url, headers=headers)
+        
+        return Result(response.text, self.__token)
+    
 class __Query: 
     """ abstract class for all query types """
     def __init__(self, token: Token) -> None:
@@ -127,7 +165,7 @@ class Search(__Query):
         self.__raw_data = None
         return self
     
-    def keywords(self, *kwds, mode_or = False) -> "Search":
+    def keywords(self, *kwds: str, mode_or = False) -> "Search":
         """ adds keywords to search query """
         if mode_or:
             self.__args["q"] = f"({', '.join(kwds)})"
@@ -145,7 +183,7 @@ class Search(__Query):
         
         response = requests.request("GET", url, headers=headers)
         
-        return Result(response.text)
+        return Result(response.text, self._token)
     
     
 
