@@ -48,13 +48,13 @@ class Token:
         self.__token = None
         self.__last_retrieved = 0
     
-    def Enable_sandbox(self) -> None:
+    def enable_sandbox(self) -> None:
         """ Enables sandbox mode """
         if not self.__sandbox_enabled:
             self.__token = None
         self.__sandbox_enabled = True
 
-    def Disable_sandbox(self) -> None:
+    def disable_sandbox(self) -> None:
         """ Disables sandbox mode for token """
         if self.__sandbox_enabled:
             self.__token = None
@@ -192,7 +192,32 @@ class Search(__Query):
         
         return Result(response.text, self._token)
 
-
+    @staticmethod
+    def to_csv(file_name: str, result: Result, append = False) -> None:
+        """ converts Result to csv file """
+        items = result.get_data()["itemSummaries"]
+        
+        columns = ("itemId", "title", "price", "adultOnly", "itemLocation", "itemWebUrl")
+        
+        with open(file_name, "a" if append else "w") as f:
+            writer = csv.writer(f)
+            
+            # write header
+            writer.writerow(("id", "title", "price", "adult_only", "location", "url"))
+            
+            for item in items:
+                row = []
+                for col in columns:
+                    if col == "itemLocation":
+                        location = ", ".join(loc for loc in item["itemLocation"])
+                        row.append( location )
+                    elif col == "price":
+                        price = item['price']['value'] + item['price']['currency']
+                        row.append( price )
+                    else:
+                        row.append( item[col] )
+                writer.writerow( row )
+        
 
 # url = "https://api.sandbox.ebay.com/identity/v1/oauth2/token"
 

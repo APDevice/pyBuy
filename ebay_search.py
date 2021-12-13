@@ -14,7 +14,7 @@ def main():
     
     results = s.new_search().keywords("playstation").execute()
     
-    
+    Search.to_csv("search.csv", results)
     
 if __name__ == '__main__':
 
