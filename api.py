@@ -54,7 +54,7 @@ class Token:
 
     def _get_sandbox(self):
         """ returns sandbox subdomain if sandbox is enabled, else returns empty string """
-        return Token.__sandbox if self.__sandbox_enabled else ""
+        return Token.__SANDBOX if self.__sandbox_enabled else ""
 
     def __auth(self) -> str:
         return 'Basic ' + b64encode((self.__key + ':' + self.__secret).encode()).decode()
@@ -116,15 +116,15 @@ class Search(__Query):
         
     def execute(self):
         """ returns results of search query """
-        url = f"https://api.{ self._token._get_sandbox() }ebay.com/buy/browse/v1/item_summary/search?"
-        payload = "&".join(f"{k}={v}" for k, v in self.__args)
+        url = f"https://api.{ self._token._get_sandbox() }ebay.com/buy/browse/v1/item_summary/search?" + \
+                "&".join(f"{k}={v}" for k, v in self.__args.items())
         headers = {
-            'content-type': "application/x-www-form-urlencoded",
-            'Authorization': self._token.get_token()
+            'Authorization': f"Bearer {self._token.get_token()}"
         }
         
-        response = requests.request("GET", url, data=payload, headers=headers)
+        response = requests.request("GET", url, headers=headers)
         
+        log.debug(response.text)
         return json.loads(response.text)
     
     
