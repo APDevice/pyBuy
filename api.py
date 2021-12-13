@@ -3,6 +3,7 @@ import json
 from time import time
 import logging as log
 from base64 import b64encode
+import csv
 
 log.basicConfig(level=log.DEBUG)
 
@@ -59,7 +60,7 @@ class Token:
             self.__token = None
         self.__sandbox_enabled = False
 
-    def _get_sandbox(self):
+    def _get_sandbox(self) -> str:
         """ returns sandbox subdomain if sandbox is enabled, else returns empty string """
         return Token.__SANDBOX if self.__sandbox_enabled else ""
 
@@ -114,14 +115,14 @@ class Result:
         """ returns raw response data """
         return self.__raw_data
     
-    def __str__(self):
-        return self.get_data()
+    def __str__(self) -> str:
+        return str(self.get_data())
     
     def has_next(self):
         """ returns true if there is a next page, else false """
         return "next" in self.__data
     
-    def next(self):
+    def next(self) -> "Result":
         """ returns next page of results """
         if not self.has_next():
             raise KeyError("next page not available")
@@ -134,11 +135,11 @@ class Result:
         
         return Result(response.text, self.__token)
 
-    def has_previous(self):
+    def has_previous(self) -> bool:
         """ returns true if there is a previous page, else false """
         return "prev" in self.__data
     
-    def previous(self):
+    def previous(self) -> "Result":
         """ returns next page of results """
         if not self.has_next():
             raise KeyError("previous page not available")
@@ -190,8 +191,6 @@ class Search(__Query):
         response = requests.request("GET", url, headers=headers)
         
         return Result(response.text, self._token)
-    
-    
 
 
 
