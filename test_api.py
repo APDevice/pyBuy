@@ -19,3 +19,13 @@ class Test_API(unittest.TestCase):
         token_b = t.get_token()
         
         self.assertEquals(token_a, token_b)
+        
+    def test_sandbox(self):
+        t = Token(AUTH_ID, CLIENT_ID, [Scope.PUBLIC], sandbox=True)
+        
+        self.assertEquals( t._get_sandbox(), "sandbox.")
+        
+    def test_no_sandbox(self):
+        t = Token(AUTH_ID, CLIENT_ID, [Scope.PUBLIC], sandbox=False)
+        
+        self.assertEquals( t._get_sandbox(), "")
