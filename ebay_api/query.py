@@ -1,10 +1,13 @@
 """ contains classes for querying data from api
 """
-import requests
 import csv
-from .token import Token
+
+import requests
+
 from .results import Result
-    
+from .token import Token
+
+
 class __Query: 
     """ abstract class for all query types """
     def __init__(self, token: Token) -> None:

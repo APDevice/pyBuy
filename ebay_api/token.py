@@ -1,10 +1,12 @@
 """ contains classes for token generation """
 
-import logging as log
-import requests
-from time import time
-from base64 import b64encode
 import json
+import logging as log
+from base64 import b64encode
+from time import time
+
+import requests
+
 
 class Token:
     """ Token gets and buffers Oauth credential

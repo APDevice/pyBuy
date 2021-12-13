@@ -1,7 +1,9 @@
 """ contains classes for storing and parsing results """
-from .token import Token
 import json
+
 from requests import request
+
+from .token import Token
 
 
 class Result:
@@ -66,4 +68,3 @@ class Result:
         response = request("GET", url, headers=headers)
         
         return Result(response.text, self.__token)
-    
