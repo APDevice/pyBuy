@@ -3,7 +3,7 @@ import json
 import sys
 import time
 
-KEYS_SOURCE = "keys_test.json"
+KEYS_SOURCE = "keys.json"
 
 def main():
     """ main program """
