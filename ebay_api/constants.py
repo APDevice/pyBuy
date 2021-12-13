@@ -1,4 +1,4 @@
-""" list of  contants for module """
+""" contains constants for module """
 
 class Scope:
     """ available scopes for token generations
