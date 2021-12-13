@@ -1,3 +1,8 @@
+""" Ebay Querying API
+Author: Dylan Luttrell
+Description: a library for querying the ebay API. Includes support for token generation
+License: MIT license
+"""
 import requests
 import json
 from time import time

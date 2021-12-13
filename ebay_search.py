@@ -1,3 +1,4 @@
+""" ebay API usage example """
 from api import Scope, Token, Search
 import json
 import sys
