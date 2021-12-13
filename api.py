@@ -19,14 +19,16 @@ class Token:
             gets token. If token already exists and has not expired, will return that.
             Otherwise requests new token from server
     """    
-    __sandbox = "sandbox."
+    __SANDBOX = "sandbox."
     
-    def __init__(self, auth_id: str,
-                 client_id: str,
-                 scope: list) -> None:
+    def __init__(self, app_id: str,
+                 cert_id: str,
+                 scope: list,
+                 sandbox = True) -> None:
         """ initilize Token instance """
-        self.__key = auth_id
-        self.__secret = client_id
+        self.__sandbox_enabled = sandbox
+        self.__key = app_id
+        self.__secret = cert_id
         assert ( type(scope) is list ) or ( type(scope) is tuple ), "scope argument must be list or tuple"
         
         self.__scope = ' '.join(scope)
@@ -38,15 +40,21 @@ class Token:
         self.__token = None
         self.__last_retrieved = 0
     
-    @classmethod
-    def EnableSandbox(cls) -> None:
+    def Enable_sandbox(self) -> None:
         """ Enables sandbox mode """
-        cls.__sandbox = "sandbox."
+        if not self.__sandbox_enabled:
+            self.__token = None
+        self.__sandbox_enabled = True
 
-    @classmethod
-    def DisableSandbox(cls) -> None:
-        """ Disables sandbox mode """
-        cls.__sandbox  = ""
+    def Disable_sandbox(self) -> None:
+        """ Disables sandbox mode for token """
+        if self.__sandbox_enabled:
+            self.__token = None
+        self.__sandbox_enabled = False
+
+    def _get_sandbox(self):
+        """ returns sandbox subdomain if sandbox is enabled, else returns empty string """
+        return Token.__sandbox if self.__sandbox_enabled else ""
 
     def __auth(self) -> str:
         return 'Basic ' + b64encode((self.__key + ':' + self.__secret).encode()).decode()
@@ -55,7 +63,7 @@ class Token:
         """ returns application access token """
         # if token doesn't already exist or it has expired, get new token
         if not self.__token or (self.__token['expires_in'] + self.__last_retrieved) < int(time()):
-            url = f"https://api.{ Token.__sandbox }ebay.com/identity/v1/oauth2/token"
+            url = f"https://api.{ self._get_sandbox() }ebay.com/identity/v1/oauth2/token"
             payload = f"grant_type=client_credentials&scope={ self.__scope }"
             headers = {
                 'Content-Type': "application/x-www-form-urlencoded",
@@ -67,7 +75,11 @@ class Token:
             self.__last_retrieved = int(time())
             self.__token = json.loads(response.text)
         
-        return self.__token
+        # raise error if query fails to return key
+        if 'access_token' not in self.__token:
+            raise PermissionError('access token invalid')
+        
+        return self.__token['access_token']
     
     def __str__(self) -> str:
         if self.__token:
@@ -75,15 +87,43 @@ class Token:
         else:
             return "No valid token."
 
-# class Search(token)
-#     def search(token: Token):
-#         url = ""
-#         payload = ""
-#         header = {
-            
-#         }
+class __Query: 
+    """ abstract class for all query types """
+    def __init__(self, token: Token) -> None:
+        self._token = token
+
+class Search(__Query):
+    """ impliments search query """
+    def __init__(self, token: Token) -> None:
+        super().__init__(token)
+        self.__args = {}
+
+    def __str__(self):
+        return self.__args
+    
+    def new_search(self) -> "Search":
+        """ reset search object to begin new seach """
+        self.__args.clear()
+        return self
+    
+    def keywords(self, *kwds, mode_or = False):
+        """ adds keywords to search query """
+        if mode_or:
+            self.__args["q"] = f"({', '.join(kwds)})"
+        else:
+            self.__args["q"] = ' '.join(kwds)
+        return self
         
-        
+    def execute(self):
+        """ returns results of search query """
+        url = f"https://api.{ self._token._get_sandbox() }ebay.com/buy/browse/v1/item_summary/search?"
+        payload = "&".join(f"{k}={v}" for k, v in self.__args)
+        header = {
+            'content-type': "application/x-www-form-urlencoded",
+            'Authorization': self._token.get_token()
+        }
+    
+    
 
 
 
