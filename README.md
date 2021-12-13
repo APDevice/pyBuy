@@ -2,7 +2,7 @@
 
 *Work in progress*
 
-The API for this project allow one to access the eBay developer API, query results, and transform them into a CSV file.
+The API for this project allows one to access the eBay developer API, query results, and transform them into a CSV file.
 
 **Requires valid Application keys in keys.json**
 
