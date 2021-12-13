@@ -37,7 +37,7 @@ class Token:
     def __init__(self, app_id: str,
                  cert_id: str,
                  scope: list,
-                 sandbox = True) -> None:
+                 sandbox: bool = True) -> None:
         """ initilize Token instance """
         self.__sandbox_enabled = sandbox
         self.__key = app_id
@@ -107,7 +107,9 @@ class Result:
         json_data : raw json data from request
         token : authorization token
     """
-    def __init__(self, json_data: str, token: Token) -> None:
+    def __init__(self,
+                 json_data: str,
+                 token: Token) -> None:
         self.__raw_data = json_data
         self.__data = json.loads(json_data)
         self.__token = token
@@ -172,7 +174,8 @@ class Search(__Query):
     PARAMETER
         Token : a valid Oauth token
     """
-    def __init__(self, token: Token) -> None:
+    def __init__(self,
+                 token: Token) -> None:
         super().__init__(token)
         self.__args = {}
 
@@ -185,7 +188,9 @@ class Search(__Query):
         self.__raw_data = None
         return self
     
-    def keywords(self, *kwds: str, mode_or = False) -> "Search":
+    def keywords(self,
+                 *kwds: str,
+                 mode_or: bool = False) -> "Search":
         """ adds keywords to search query """
         if mode_or:
             self.__args["q"] = f"({', '.join(kwds)})"
@@ -206,7 +211,9 @@ class Search(__Query):
         return Result(response.text, self._token)
 
     @staticmethod
-    def to_csv(file_name: str, result: Result, append = False) -> None:
+    def to_csv(file_name: str,
+               result: Result,
+               append: bool = False) -> None:
         """ converts Result to csv file """
         items = result.get_data()["itemSummaries"]
         
