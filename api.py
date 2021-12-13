@@ -7,17 +7,24 @@ from base64 import b64encode
 log.basicConfig(level=log.DEBUG)
 
 class Scope:
-    """ available scopes for token generations """
-    PUBLIC = "https://api.ebay.com/oauth/api_scope" #access public data
+    """ available scopes for token generations
+    
+    CONSTANTS
+        PUBLIC : basic scope for access to search functions
+    """
+    
+    # basic scope for access to search functions
+    PUBLIC = "https://api.ebay.com/oauth/api_scope"
 
 
 class Token:
     """ Token gets and buffers Oauth credential
     
-    Methods
-        get_token() -> dict
-            gets token. If token already exists and has not expired, will return that.
-            Otherwise requests new token from server
+    PARAMETERS
+        app_id : App ID (aka Client ID) supplied by ebay
+        cert_id : Cert ID (aka Client Secret) supplied by ebay
+        scope : list of Scopes required for request (see Scope)
+        sandbox : (optional) sets whether to use API in sandbox mode (default = True)
     """    
     __SANDBOX = "sandbox."
     
@@ -88,7 +95,12 @@ class Token:
             return "No valid token."
 
 class Result:
-    """ stores results of API request """
+    """ stores results of API request
+    
+    PARAMETERS
+        json_data : raw json data from request
+        token : authorization token
+    """
     def __init__(self, json_data: str, token: Token) -> None:
         self.__raw_data = json_data
         self.__data = json.loads(json_data)
@@ -106,6 +118,7 @@ class Result:
         return self.get_data()
     
     def has_next(self):
+        """ returns true if there is a next page, else false """
         return "next" in self.__data
     
     def next(self):
@@ -122,6 +135,7 @@ class Result:
         return Result(response.text, self.__token)
 
     def has_previous(self):
+        """ returns true if there is a previous page, else false """
         return "prev" in self.__data
     
     def previous(self):
