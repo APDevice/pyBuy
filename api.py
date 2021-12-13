@@ -108,7 +108,7 @@ class Result:
         self.__token = token
         
     def get_token(self) -> Token:
-        """ for debuging purposes """
+        """ returns access token for this result """
         return self.__token
         
     def get_data(self) -> dict:
@@ -162,7 +162,11 @@ class __Query:
         self._token = token
 
 class Search(__Query):
-    """ impliments search query """
+    """ impliments search query 
+    
+    PARAMETER
+        Token : a valid Oauth token
+    """
     def __init__(self, token: Token) -> None:
         super().__init__(token)
         self.__args = {}
