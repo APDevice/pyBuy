@@ -1,5 +1,5 @@
 import unittest
-from api import Scope, Search, Token
+from ebay_api import Scope, Search, Token
 import json
 
 KEYS_SOURCE = "keys.json"
