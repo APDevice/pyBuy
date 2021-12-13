@@ -4,7 +4,7 @@
 
 The API for this project allows one to access the eBay developer API, query results, and transform them into a CSV file.
 
-**demonstration program 'search_ebay' requires valid Application keys in keys.json to run**
+**demonstration program 'search_ebay' requires valid Application keys in keys.json before it can run**
 
 ### Current Features:
 - Oauth2 token generator
