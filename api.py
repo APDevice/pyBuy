@@ -187,7 +187,6 @@ class Search(__Query):
     def new_search(self) -> "Search":
         """ reset search object to begin new seach """
         self.__args.clear()
-        self.__raw_data = None
         return self
     
     def keywords(self,
