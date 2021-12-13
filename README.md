@@ -2,7 +2,7 @@
 
 *Work in progress*
 
-Search eBay via REST API and return a CSV file with relevant data
+The API for this project allow one to access the eBay developer API, query results, and transform them into a CSV file.
 
 **Requires valid Application keys in keys.json**
 
@@ -10,3 +10,6 @@ Search eBay via REST API and return a CSV file with relevant data
 - Oauth2 token generator
 - Seach Query
     - Search By Keyword
+    - Convert Results to csv
+- Results
+    - access queried data
