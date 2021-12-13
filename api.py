@@ -10,8 +10,6 @@ import logging as log
 from base64 import b64encode
 import csv
 
-log.basicConfig(level=log.DEBUG)
-
 class Scope:
     """ available scopes for token generations
     

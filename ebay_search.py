@@ -3,8 +3,11 @@ from api import Scope, Token, Search
 import json
 import sys
 import time
+import logging as log
 
 KEYS_SOURCE = "keys.json"
+
+log.basicConfig(level=log.DEBUG)
 
 def main():
     """ main program """
