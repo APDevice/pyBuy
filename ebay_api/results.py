@@ -68,3 +68,19 @@ class Result:
         response = request("GET", url, headers=headers)
         
         return Result(response.text, self.__token)
+    
+    def __iter__(self):
+        """ iterate through results """
+        return ResultIterator(self)
+
+
+class ResultIterator():
+    def __init__(self, result: Result) -> None:
+        self.result = result
+        
+    def __next__(self):
+        """ gets next result """
+        if self.result.has_next():
+            self.result = self.result.next()
+        else:
+            raise StopIteration
