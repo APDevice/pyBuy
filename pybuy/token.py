@@ -58,7 +58,7 @@ class Token:
     def __auth(self) -> str:
         return 'Basic ' + b64encode((self.__key + ':' + self.__secret).encode()).decode()
 
-    def get_token(self) -> dict:
+    def get_token(self) -> dict: # TODO: fix problem with oauth2
         """ returns application access token """
         # if token doesn't already exist or it has expired, get new token
         if not self.__token or (self.__token['expires_in'] + self.__last_retrieved) < int(time()):
