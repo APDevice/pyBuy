@@ -1,17 +1,22 @@
 """ contains classes for querying data from api
 """
+from abc import ABCMeta, abstractmethod
 import csv
 
 import requests
 
 from .results import Result
 from .token import Token
+from typing import Optional, Tuple
 
-
-class __Query: 
+class __Query(metaclass=ABCMeta): 
     """ abstract class for all query types """
     def __init__(self, token: Token) -> None:
         self._token = token
+    
+    @abstractmethod
+    def execute(self):
+        return
 
 class Search(__Query):
     """ impliments search query 
@@ -41,6 +46,55 @@ class Search(__Query):
         else:
             self.__args["q"] = ' '.join(kwds)
         return self
+    
+    def autocorrect(self,
+                    active: bool) -> "Search":
+        """ if True, adds autocorrect to search query """
+        if active:
+            self.__args["auto_correct"] = "KEYWORD"
+        elif "auto_correct" in self.__args:
+            self.__args.pop("auto_correct", None)
+        
+        return self
+    
+    def limit(self,
+              cnt: int) -> "Search":
+        """ set limit for number of results per page """
+        self.__args["limit"] = cnt
+        return self
+    
+    def sort(self,
+             by: str,
+             accending: bool = True) -> "Search":
+        """[summary]
+        
+        Arguments:
+            by (str): 
+            
+            accending (bool):
+            
+        Returns:
+            (Search): 
+        """
+        
+        if accending:
+            self.__args["sort"] = by
+        else:
+            self.__args["sort"] = "-" + by
+            
+        return self
+    
+    def epid(self, epid: int) -> "Search":
+        """ add eBay product identifier to search query """
+        self.__args["epid"] = epid
+        return self
+    
+    # TODO: impliment filtering
+    # def filter(self,
+    #            price: Optional[Tuple[int, int]] = None,
+    #            ) -> "Search":
+        
+    #     return self
         
     def execute(self) -> Result:
         """ returns results of search query """
