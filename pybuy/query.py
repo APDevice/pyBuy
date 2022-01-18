@@ -7,7 +7,8 @@ import requests
 
 from .results import Result
 from .token import Token
-from typing import Optional, Tuple
+# from typing import Optional, Tuple
+from pprint import pformat
 
 class __Query(metaclass=ABCMeta): 
     """ abstract class for all query types """
@@ -21,7 +22,7 @@ class __Query(metaclass=ABCMeta):
 class Search(__Query):
     """ impliments search query 
     
-    PARAMETER
+    Args:
         Token : a valid Oauth token
     """
     def __init__(self,
@@ -68,7 +69,7 @@ class Search(__Query):
              accending: bool = True) -> "Search":
         """[summary]
         
-        Arguments:
+        Args:
             by (str): 
             
             accending (bool):
@@ -138,3 +139,24 @@ class Search(__Query):
                     else:
                         row.append( item[col] )
                 writer.writerow( row )
+    
+    @staticmethod
+    def to_json(file_name: str,
+               result: Result,
+               human_readable: bool = False) -> None:
+        """save Result to json file
+        
+        Args:
+            file_name (str): output file name
+            result (Result): data to output
+            human_readable (bool): if true, applies formatting to output for readability
+        """        
+        
+        if human_readable:
+            data = pformat(result.get_data())
+        else:
+            data = result.get_raw_data()
+            
+        with open(file_name, "w") as f:
+            f.write(data)
+        
