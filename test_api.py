@@ -1,5 +1,5 @@
 import unittest
-from ebay_api import Scope, Search, Token
+from pybuy import Scope, Search, Token
 import json
 
 KEYS_SOURCE = "keys.json"

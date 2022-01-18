@@ -3,3 +3,5 @@ pybuy_env/
 __pycache__/
 .vscode/
 search.csv
+search.json
+.DS_Store
