@@ -6,7 +6,7 @@ The API for this project allows one to access the eBay developer API, query resu
 
 ### Requirements
 - Ebay developer account
-- contents of 'ebay_api' directory (simply add to your project)
+- contents of 'pybuy' subdirectory (simply add to your project)
 
 ### API Usage
 Before you can make any queries, you must first generate an application token. This action is performed using the Token class. 
