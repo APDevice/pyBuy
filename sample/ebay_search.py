@@ -6,7 +6,7 @@ import time
 import logging as log
 from pprint import pprint
 
-KEYS_SOURCE = "keys_test.json"
+KEYS_SOURCE = "keys.json"
 
 log.basicConfig(level=log.DEBUG)
  

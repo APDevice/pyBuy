@@ -5,3 +5,4 @@ __pycache__/
 search.csv
 search.json
 .DS_Store
+pybuy.egg-info

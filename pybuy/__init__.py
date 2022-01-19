@@ -34,7 +34,7 @@ COPYRIGHT
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE. 
 """
-__name__ = "pybuy"
+__version__ = "0.0.3"
 __author__ = "Dylan Luttrell"
 
 
