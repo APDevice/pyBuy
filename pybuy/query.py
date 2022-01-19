@@ -121,8 +121,9 @@ class Search(__Query):
         with open(file_name, "a" if append else "w") as f:
             writer = csv.writer(f)
             
-            # write header
-            writer.writerow(("id", "title", "price", "adult_only", "location", "url"))
+            if f.tell() == 0:
+                # write header only if file is empty
+                writer.writerow(("id", "title", "price", "adult_only", "location", "url"))
             
             # loop through items in query
             for item in items:
