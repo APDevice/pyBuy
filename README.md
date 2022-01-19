@@ -5,9 +5,18 @@
 The API for this project allows one to access the eBay developer API, query results, and transform them into a CSV file.
 
 ### Requirements
-- Ebay developer account
-- contents of 'pybuy' subdirectory (simply add to your project)
+- Ebay developer account (see: https://developer.ebay.com)
 
+### Installation
+
+MacOS / Linux Terminal:
+```
+pip install https://github.com/APDevice/pyBuy/archive/refs/tags/v0.3.tar.gz
+```
+Windows Command Prompt:
+```
+py -m pip install https://github.com/APDevice/pyBuy/archive/refs/tags/v0.3.tar.gz
+```
 ### API Usage
 Before you can make any queries, you must first generate an application token. This action is performed using the Token class. 
 
