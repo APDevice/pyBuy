@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='pybuy',
-    version='0.0.3',    
+    version='0.3.0',    
     description='A library for accessing Ebay REST API',
     url='https://github.com/APDevice/pyBuy',
     author='Dylan Luttrell',
