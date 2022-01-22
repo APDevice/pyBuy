@@ -64,6 +64,12 @@ class Search(__Query):
         self.__args["limit"] = cnt
         return self
     
+    def offset(self,
+              n: int) -> "Search":
+        """ set page offset of results """
+        self.__args["offset"] = n
+        return self
+    
     def sort(self,
              by: str,
              accending: bool = True) -> "Search":
@@ -99,13 +105,16 @@ class Search(__Query):
         
     def execute(self) -> Result:
         """ returns results of search query """
-        url = f"https://api.{ self._token._get_sandbox() }ebay.com/buy/browse/v1/item_summary/search?" + \
-                "&".join(f"{k}={v}" for k, v in self.__args.items())
+        url = f"https://api.{ self._token._get_sandbox() }ebay.com/buy/browse/v1/item_summary/search"
+                # "&".join(f"{k}={v}" for k, v in self.__args.items())
         headers = {
             'Authorization': f"Bearer {self._token.get_token()}"
         }
-        
-        response = requests.request("GET", url, headers=headers)
+        print(self.__args)
+        response = requests.request("GET",
+                                    url,
+                                    headers = headers,
+                                    params = self.__args)
         
         return Result(response.text, self._token)
 
