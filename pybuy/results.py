@@ -37,7 +37,7 @@ class Result:
     
     def has_next(self):
         """ returns true if there is a next page, else false """
-        return self.__data["total"] > (self.__data["limit"] + self.__data["offset"])
+        return "next" in self.get_data()
     
     def next(self) -> "Result":
         """ returns next page of results """
@@ -54,7 +54,7 @@ class Result:
 
     def has_previous(self) -> bool:
         """ returns true if there is a previous page, else false """
-        return self.__data["offset"] > 0
+        return "prev" in self.get_data()
     
     def previous(self) -> "Result":
         """ returns next page of results """
