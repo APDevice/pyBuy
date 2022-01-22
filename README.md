@@ -11,11 +11,11 @@ The API for this project allows one to access the eBay developer API, query resu
 
 MacOS / Linux Terminal:
 ```
-pip install https://github.com/APDevice/pyBuy/archive/refs/tags/v0.3.tar.gz
+pip install https://github.com/APDevice/pyBuy/archive/refs/tags/v0.3.1.tar.gz
 ```
 Windows Command Prompt:
 ```
-py -m pip install https://github.com/APDevice/pyBuy/archive/refs/tags/v0.3.tar.gz
+py -m pip install https://github.com/APDevice/pyBuy/archive/refs/tags/v0.3.1.tar.gz
 ```
 ### API Usage
 Before you can make any queries, you must first generate an application token. This action is performed using the Token class. 
