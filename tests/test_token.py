@@ -6,7 +6,7 @@ import os
 keys = dict()
 if "EBAY_APP_ID" in os.environ:
     AUTH_ID = os.environ["EBAY_APP_ID"]
-    CLIENT_ID = os.environ["EBAY_CLIENT_ID"]
+    CLIENT_ID = os.environ["EBAY_CERT_ID"]
 else:
     KEYS_SOURCE = "keys.json"
     with open(KEYS_SOURCE, "r") as f:
