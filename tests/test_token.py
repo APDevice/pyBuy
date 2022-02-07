@@ -1,13 +1,19 @@
 import unittest
 from pybuy import Scope, Search, Token
 import json
+import os
 
-KEYS_SOURCE = "keys.json"
-with open(KEYS_SOURCE, "r") as f:
+keys = dict()
+if "EBAY_APP_ID" in os.environ:
+    AUTH_ID = os.environ["EBAY_APP_ID"]
+    CLIENT_ID = os.environ["EBAY_CLIENT_ID"]
+else:
+    KEYS_SOURCE = "keys.json"
+    with open(KEYS_SOURCE, "r") as f:
         keys = json.load(f)
 
-AUTH_ID = keys["App ID"] 
-CLIENT_ID = keys["Cert ID"]
+    AUTH_ID = keys["App ID"] 
+    CLIENT_ID = keys["Cert ID"]
 
 class Test_API(unittest.TestCase):
     def test_token_buffer(self):
