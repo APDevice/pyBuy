@@ -40,7 +40,9 @@ class Test_API(unittest.TestCase):
         expected = t.get_token()
         
         s = Search(t)
-        results = s.new_search().keywords( "something" ).execute()
+        results = (s.new_search()
+                   .keywords( "playstation" )
+                   .execute())
         
         got = results.get_token().get_token()
         
@@ -50,7 +52,10 @@ class Test_API(unittest.TestCase):
         t = Token(AUTH_ID, CLIENT_ID, [Scope.PUBLIC], sandbox=True)
 
         s = Search(t)
-        results = s.new_search().keywords( "playstation" ).execute()
+        results = (s.new_search()
+                   .keywords( "playstation", "xbox", mode_or=True)
+                   .limit(10)
+                   .execute())
         
         expected = results.get_token().get_token()
         
